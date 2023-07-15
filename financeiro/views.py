@@ -46,9 +46,11 @@ class ContaBancariaViewset(mixins.ListModelMixin,
                               viewsets.GenericViewSet):
     queryset = ContaBancaria.objects.all()
     serializer_class = ContaBancariaSerializer
+    permission_classes = (AllowAny,)
     
 
 class ConsultarSaldoAPIView(APIView):
+    permission_classes = (AllowAny,)
     def get(self, request, numero_conta):
         try:
             conta = ContaBancaria.objects.get(numero_conta=numero_conta)
@@ -60,6 +62,7 @@ class ConsultarSaldoAPIView(APIView):
 
 
 class ConsultarExtratoAPIView(APIView):
+    permission_classes = (AllowAny,)
     
     def get(self, request, numero_conta):
         data_atual = timezone.now()
@@ -72,6 +75,7 @@ class ConsultarExtratoAPIView(APIView):
 
 
 class TransferenciaContaBancariaAPIView(APIView):
+    permission_classes = (AllowAny,)
     def post(self, request):
         numero_conta_origem = request.data.get('numero_conta_origem')
         numero_conta_destino = request.data.get('numero_conta_destino')
