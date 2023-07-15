@@ -1,0 +1,43 @@
+version: '3.7'
+services:
+  service:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    volumes:
+      - .:/usr/local/app
+    env_file:
+      - ./core/.env
+    networks:
+      - condoconta-api
+    depends_on:
+      - postgres
+    stdin_open: true
+    tty: true
+
+  postgres:
+    image: postgres:9.4
+    environment:
+      POSTGRES_PASSWORD: "root1234"
+      POSTGRES_DB: "condoconta"
+    ports:
+      - 5432:5432
+    volumes:
+      - condoconta_data:/var/lib/postgresql/data/
+      - .:/usr/local/app
+    working_dir: /opt/app
+    privileged: true
+    networks:
+      - condoconta-api
+
+volumes:
+  condoconta_data:
+
+networks:
+  condoconta-api:
+    name: condoconta-api
+    driver: bridge
+
+
